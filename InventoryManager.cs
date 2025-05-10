@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Inventory
 {
-    internal class InventoryManager
+    public class InventoryManager
     {
         public List<InventoryItem> Items { get; private set; }
 
