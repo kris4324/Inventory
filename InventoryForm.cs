@@ -30,30 +30,30 @@ namespace Inventory
             nameTextBox = new TextBox
             {
                 Location = new System.Drawing.Point(10, 10),
-                Width = 150,
-                PlaceholderText = "Название"
+                Width = 150
             };
+            nameTextBox.Text = "Название";
 
             quantityTextBox = new TextBox
             {
                 Location = new System.Drawing.Point(170, 10),
-                Width = 80,
-                PlaceholderText = "Количество"
+                Width = 80
             };
+            quantityTextBox.Text = "Количество";
 
             priceTextBox = new TextBox
             {
                 Location = new System.Drawing.Point(260, 10),
-                Width = 100,
-                PlaceholderText = "Цена"
+                Width = 100
             };
+            priceTextBox.Text = "Цена";
 
             categoryTextBox = new TextBox
             {
                 Location = new System.Drawing.Point(370, 10),
-                Width = 100,
-                PlaceholderText = "Категория"
+                Width = 100
             };
+            categoryTextBox.Text = "Категория";
 
             addItemButton = new Button
             {
@@ -104,18 +104,15 @@ namespace Inventory
             itemsListBox.Items.Clear();
             foreach (var item in inventoryManager.Items)
             {
-                itemsListBox.Items.Add($"{item.Name} - Количество: {item.Quantity} | Цена: 
-    { item.Price}
-                руб. | Категория: { item.Category}
-                "); 
+                itemsListBox.Items.Add($"{item.Name} - Количество: {item.Quantity} | Цена: {item.Price} руб. | Категория: {item.Category}");
             }
         }
 
         private void AddItemButton_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(nameTextBox.Text) ||
-    string.IsNullOrEmpty(quantityTextBox.Text) || string.IsNullOrEmpty(priceTextBox.Text) ||
-    string.IsNullOrEmpty(categoryTextBox.Text))
+                string.IsNullOrEmpty(quantityTextBox.Text) || string.IsNullOrEmpty(priceTextBox.Text) ||
+                string.IsNullOrEmpty(categoryTextBox.Text))
             {
                 MessageBox.Show("Заполните все поля!");
                 return;
@@ -123,13 +120,13 @@ namespace Inventory
             int quantity;
             decimal price;
             if (!int.TryParse(quantityTextBox.Text, out quantity) ||
-    !decimal.TryParse(priceTextBox.Text, out price))
+                !decimal.TryParse(priceTextBox.Text, out price))
             {
                 MessageBox.Show("Неверный формат количества или цены!");
                 return;
             }
             InventoryItem newItem = new InventoryItem(nameTextBox.Text, quantity, price,
-    categoryTextBox.Text);
+                categoryTextBox.Text);
             try
             {
                 inventoryManager.AddItem(newItem);
