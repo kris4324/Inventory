@@ -110,37 +110,56 @@ namespace Inventory
 
         private void AddItemButton_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(nameTextBox.Text) ||
-                string.IsNullOrEmpty(quantityTextBox.Text) || string.IsNullOrEmpty(priceTextBox.Text) ||
-                string.IsNullOrEmpty(categoryTextBox.Text))
+            // Проверка пустых полей
+            if (string.IsNullOrWhiteSpace(nameTextBox.Text) ||
+                string.IsNullOrWhiteSpace(quantityTextBox.Text) ||
+                string.IsNullOrWhiteSpace(priceTextBox.Text))
             {
-                MessageBox.Show("Заполните все поля!");
+                MessageBox.Show("Заполните все обязательные поля!");
                 return;
             }
-            int quantity;
-            decimal price;
-            if (!int.TryParse(quantityTextBox.Text, out quantity) ||
-                !decimal.TryParse(priceTextBox.Text, out price))
+
+            // Проверка граничных значений
+            if (!int.TryParse(quantityTextBox.Text, out int quantity) || quantity < 0)
             {
-                MessageBox.Show("Неверный формат количества или цены!");
+                MessageBox.Show("Количество должно быть положительным числом!");
                 return;
             }
-            InventoryItem newItem = new InventoryItem(nameTextBox.Text, quantity, price,
-                categoryTextBox.Text);
-            try
+
+            if (!decimal.TryParse(priceTextBox.Text, out decimal price) || price <= 0)
             {
-                inventoryManager.AddItem(newItem);
-                nameTextBox.Clear();
-                quantityTextBox.Clear();
-                priceTextBox.Clear();
-                categoryTextBox.Clear();
-                UpdateItemsList();
+                MessageBox.Show("Цена должна быть положительным числом!");
+                return;
             }
-            catch (Exception ex)
+
+            // Проверка наличия товара
+            if (inventoryManager.Items.Any(item => item.Name.Equals(nameTextBox.Text, StringComparison.OrdinalIgnoreCase)))
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Товар с таким названием уже существует!");
+                return;
             }
+
+            // Добавление товара
+            InventoryItem newItem = new InventoryItem(
+                nameTextBox.Text,
+                quantity,
+                price,
+                categoryTextBox.Text
+            );
+
+            inventoryManager.AddItem(newItem);
+            UpdateItemsList();
+            ClearInputs();
         }
+
+        private void ClearInputs()
+        {
+            nameTextBox.Clear();
+            quantityTextBox.Clear();
+            priceTextBox.Clear();
+            categoryTextBox.Clear();
+        }
+
 
         private void RemoveItemButton_Click(object sender, EventArgs e)
         {

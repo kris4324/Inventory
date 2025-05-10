@@ -39,10 +39,9 @@ namespace Inventory
 
         public void UpdateItemQuantity(InventoryItem item, int newQuantity)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (newQuantity < 0) throw new ArgumentException("Количество не может быть отрицательным");
+
             item.Quantity = newQuantity;
             SaveItems();
         }
